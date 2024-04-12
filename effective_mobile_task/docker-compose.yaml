@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+#  app:
+#    build: .
+#    container_name: app
+#    ports:
+#      - "8000:8000"
+#    volumes:
+#      - .:/app
+#    restart: always
+#    links:
+#      - postgres
+#    depends_on:
+#      - postgres
+#    environment:
+#      POSTGRES_HOST: postgres
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: postgres
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./migration:/docker-entrypoint-initdb.d
+    restart: unless-stopped
