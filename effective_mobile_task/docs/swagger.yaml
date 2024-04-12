@@ -1,0 +1,163 @@
+basePath: /
+definitions:
+  model.CarInput:
+    properties:
+      regNums:
+        items:
+          type: string
+        type: array
+    type: object
+  model.CarUpdate:
+    properties:
+      mark:
+        type: string
+      model:
+        type: string
+      ownerID:
+        type: integer
+      year:
+        type: integer
+    type: object
+  model.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: Cars catalog API for Effective Mobile test task.
+  title: Cars-Catalog API
+  version: "1.0"
+paths:
+  /cars/add:
+    post:
+      consumes:
+      - application/json
+      description: Add new cars to the database
+      parameters:
+      - description: Array of registration numbers of new cars
+        in: body
+        name: cars
+        required: true
+        schema:
+          $ref: '#/definitions/model.CarInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Add new cars
+      tags:
+      - Cars
+  /cars/info/{limit}/{offset}:
+    get:
+      consumes:
+      - application/json
+      description: Get cars with filtering and pagination
+      parameters:
+      - description: Offset for pagination
+        in: path
+        name: offset
+        type: integer
+      - description: Limit for pagination
+        in: path
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items: {}
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Get cars with filtering and pagination
+      tags:
+      - Cars
+  /cars/remove/{car_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a car from the database by registration number
+      parameters:
+      - description: Car ID
+        in: path
+        name: car_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Delete a car by registration number
+      tags:
+      - Cars
+  /cars/update/{car_id}:
+    patch:
+      consumes:
+      - application/json
+      description: Update car information by registration number
+      parameters:
+      - description: Car ID
+        in: path
+        name: car_id
+        required: true
+        type: integer
+      - description: Car object with updated information
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/model.CarUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema: {}
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Update car information by registration number
+      tags:
+      - Cars
+swagger: "2.0"
